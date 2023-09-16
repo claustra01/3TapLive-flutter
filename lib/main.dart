@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:hackz_tyranno/auth.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -68,6 +70,10 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _redirectToAuthPage() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -111,6 +117,10 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            ElevatedButton(
+                onPressed: _redirectToAuthPage,
+                child: const Icon(Icons.account_box)
             ),
           ],
         ),
