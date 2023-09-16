@@ -9,11 +9,22 @@ class AuthPage extends ConsumerStatefulWidget {
 }
 
 class AuthPageState extends ConsumerState<AuthPage> {
+
+  void _googleFirebaseAuth() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Auth Page")
+        title: const Text('Login Page')
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: _googleFirebaseAuth,
+          child: const Text('Login with Google')
+        ),
       ),
     );
   }

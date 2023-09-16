@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "221509436504",
+    "project_id": "hackz-tyranno",
+    "storage_bucket": "hackz-tyranno.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221509436504:android:b033223f1d4ad9119c762d",
+        "android_client_info": {
+          "package_name": "com.example.hackz_tyranno"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221509436504-9jn23lbf33t4pffes44ejodr1i8gue5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZI7N43sEw2omdOSCgSAseW1unolLW6RA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "221509436504-9jn23lbf33t4pffes44ejodr1i8gue5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
