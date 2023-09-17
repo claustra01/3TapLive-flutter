@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:hackz_tyranno/view/auth.dart';
+import 'package:hackz_tyranno/view/agora.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,6 +37,10 @@ class _HomePageState extends State<HomePage> {
 
   void _redirectToAuthPage() {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage()));
+  }
+
+  void _redirectToAgoraPage() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const AgoraTest()));
   }
 
   @override
@@ -85,6 +90,10 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton(
                 onPressed: _redirectToAuthPage,
                 child: const Icon(Icons.account_box)
+            ),
+            ElevatedButton(
+                onPressed: _redirectToAgoraPage,
+                child: const Icon(Icons.add_a_photo)
             ),
           ],
         ),

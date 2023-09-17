@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'firebase_options.dart';
 import 'package:hackz_tyranno/view/home.dart';
 
 void main() async {
 
-  // Init firebase app
+  // load .env
+  await dotenv.load(fileName: '.env');
+
+  // init firebase app
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
