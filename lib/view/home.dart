@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:hackz_tyranno/component/dialog.dart';
 import 'package:hackz_tyranno/view/auth.dart';
 import 'package:hackz_tyranno/view/agora.dart';
 
@@ -11,16 +13,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  void _logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      if (!mounted) return;
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage()));
+    } catch (e) {
+      // view error dialog
+      if (!mounted) return;
+      showAlertDialog(context, "Error", "Logout failed");
+    }
+  }
+
   int _counter = 0;
 
   void _incrementCounter() {
     setState(() {
       _counter++;
     });
-  }
-
-  void _redirectToAuthPage() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage()));
   }
 
   void _redirectToAgoraPage() {
@@ -45,22 +56,27 @@ class _HomePageState extends State<HomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            ElevatedButton(
-                onPressed: _redirectToAuthPage,
-                child: const Icon(Icons.account_box)
-            ),
-            ElevatedButton(
-                onPressed: _redirectToAgoraPage,
-                child: const Icon(Icons.add_a_photo)
-            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            child: FloatingActionButton(
+              heroTag: 'startStreamButton',
+              onPressed: _redirectToAgoraPage,
+              child: const Icon(Icons.video_call_outlined),
+            ),
+          ),
+          FloatingActionButton(
+            heroTag: 'logoutButton',
+            onPressed: _logout,
+            child: const Icon(Icons.logout),
+          ),
+        ],
+      ),
     );
   }
 }
