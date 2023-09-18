@@ -15,6 +15,8 @@ class AuthPage extends ConsumerStatefulWidget {
 
 class AuthPageState extends ConsumerState<AuthPage> {
 
+  final nameController = TextEditingController();
+
   void _loginWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -25,6 +27,8 @@ class AuthPageState extends ConsumerState<AuthPage> {
       );
       User? user =  (await FirebaseAuth.instance.signInWithCredential(credential)).user;
       if (user != null) {
+        // set user display name
+        await user.updateDisplayName(nameController.text);
         // route to home
         if (!mounted) return;
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
@@ -43,9 +47,24 @@ class AuthPageState extends ConsumerState<AuthPage> {
         title: const Text('Login Page')
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: _loginWithGoogle,
-          child: const Text('Login with Google')
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.all(32),
+              child: TextField(
+                decoration: const InputDecoration(
+                  label: Text('Display Name'),
+                  border: OutlineInputBorder(),
+                ),
+                controller: nameController,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: _loginWithGoogle,
+              child: const Text('Login with Google')
+            ),
+          ],
         ),
       ),
     );
