@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'package:hackz_tyranno/component/dialog.dart';
 import 'package:hackz_tyranno/view/home.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
@@ -14,6 +15,8 @@ class AuthPage extends ConsumerStatefulWidget {
 
 class AuthPageState extends ConsumerState<AuthPage> {
 
+  final nameController = TextEditingController();
+
   void _loginWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -24,6 +27,10 @@ class AuthPageState extends ConsumerState<AuthPage> {
       );
       User? user =  (await FirebaseAuth.instance.signInWithCredential(credential)).user;
       if (user != null) {
+        // set user display name
+        if (nameController.text != '') {
+          await user.updateDisplayName(nameController.text);
+        }
         // route to home
         if (!mounted) return;
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
@@ -31,21 +38,7 @@ class AuthPageState extends ConsumerState<AuthPage> {
     } catch (e) {
       // view error dialog
       if (!mounted) return;
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Error"),
-            content: const Text("Login failed"),
-            actions: [
-              TextButton(
-                child: const Text("OK"),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          );
-        },
-      );
+      showAlertDialog(context, "Error", "Login failed");
     }
   }
 
@@ -53,12 +46,28 @@ class AuthPageState extends ConsumerState<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login Page')
+        title: const Text('Login Page'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: _loginWithGoogle,
-          child: const Text('Login with Google')
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.all(32),
+              child: TextField(
+                decoration: const InputDecoration(
+                  label: Text('Display Name'),
+                  border: OutlineInputBorder(),
+                ),
+                controller: nameController,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: _loginWithGoogle,
+              child: const Text('Login with Google')
+            ),
+          ],
         ),
       ),
     );
