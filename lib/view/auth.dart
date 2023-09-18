@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'package:hackz_tyranno/component/dialog.dart';
 import 'package:hackz_tyranno/view/home.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
@@ -31,21 +32,7 @@ class AuthPageState extends ConsumerState<AuthPage> {
     } catch (e) {
       // view error dialog
       if (!mounted) return;
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Error"),
-            content: const Text("Login failed"),
-            actions: [
-              TextButton(
-                child: const Text("OK"),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          );
-        },
-      );
+      showAlertDialog(context, "Error", "Login failed");
     }
   }
 
