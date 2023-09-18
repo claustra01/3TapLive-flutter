@@ -28,7 +28,9 @@ class AuthPageState extends ConsumerState<AuthPage> {
       User? user =  (await FirebaseAuth.instance.signInWithCredential(credential)).user;
       if (user != null) {
         // set user display name
-        await user.updateDisplayName(nameController.text);
+        if (nameController.text != '') {
+          await user.updateDisplayName(nameController.text);
+        }
         // route to home
         if (!mounted) return;
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
@@ -44,7 +46,8 @@ class AuthPageState extends ConsumerState<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login Page')
+        title: const Text('Login Page'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Center(
         child: Column(
