@@ -46,7 +46,9 @@ class StreamingStartPageState extends ConsumerState<StreamingStartPage> {
       print(response);
       final data = response.data['createChannel'];
       if (!mounted) return;
-      Navigator.push(context, MaterialPageRoute(builder: (context) => StreamingHostPage(channelName: data['name'], token: data['token'])));
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => StreamingHostPage(channelName: data['name'], token: data['token'])), (_) => false);
     } else {
       // view error dialog
       if (!mounted) return;

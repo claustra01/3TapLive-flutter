@@ -120,7 +120,9 @@ class StreamingAudiencePageState extends ConsumerState<StreamingAudiencePage> {
   }
 
   void _redirectToHome() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage()), (_) => false);
   }
 
   @override

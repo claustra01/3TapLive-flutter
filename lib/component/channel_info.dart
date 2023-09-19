@@ -7,7 +7,9 @@ Widget channelPanel(BuildContext context, final channelData) {
 
   return InkWell(
     onTap: () {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StreamingAudiencePage(channelName: channelData['name'], token: channelData['token'])));
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => StreamingAudiencePage(channelName: channelData['name'], token: channelData['token'])), (_) => false);
     },
     child: Container(
       margin: const EdgeInsets.only(top: 10, left: 10, right: 10),

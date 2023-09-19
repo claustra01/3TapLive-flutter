@@ -48,14 +48,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _redirectToStartPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const StreamingStartPage()));
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const StreamingStartPage()), (_) => false);
   }
 
   void _logout() async {
     try {
       await FirebaseAuth.instance.signOut();
       if (!mounted) return;
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage()));
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const AuthPage()), (_) => false);
     } catch (e) {
       // view error dialog
       if (!mounted) return;

@@ -5,6 +5,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:hackz_tyranno/component/video_panel.dart';
+import 'package:hackz_tyranno/view/home.dart';
 
 class StreamingHostPage extends ConsumerStatefulWidget {
   final String channelName;
@@ -122,6 +123,11 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
     agoraEngine.leaveChannel();
   }
 
+  void _redirectToHome() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage()), (_) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +177,15 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
               ],
             ),
           ],
-        )
+        ),
+        floatingActionButton: Container(
+          alignment: Alignment.topLeft,
+          margin: const EdgeInsets.all(30),
+          child: FloatingActionButton(
+            onPressed: _redirectToHome,
+            child: const Icon(Icons.close),
+          ),
+        ),
       ),
     );
   }

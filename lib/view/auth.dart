@@ -33,7 +33,9 @@ class AuthPageState extends ConsumerState<AuthPage> {
         }
         // route to home
         if (!mounted) return;
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()), (_) => false);
       }
     } catch (e) {
       // view error dialog
