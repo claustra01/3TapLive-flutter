@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
           itemCount: channelList != null ? channelList.length : 0,
           itemBuilder: (BuildContext context, int index) {
             final channelData = channelList[index];
-            return channelPanel(channelData);
+            return channelPanel(context, channelData);
           },
         ),
       ),
