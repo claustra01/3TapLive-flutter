@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 
 import 'package:hackz_tyranno/component/video_panel.dart';
+import 'package:hackz_tyranno/view/home.dart';
 
 class StreamingAudiencePage extends ConsumerStatefulWidget {
   final String channelName;
@@ -118,56 +119,67 @@ class StreamingAudiencePageState extends ConsumerState<StreamingAudiencePage> {
     agoraEngine.leaveChannel();
   }
 
+  void _redirectToHome() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       scaffoldMessengerKey: scaffoldMessengerKey,
       home: Scaffold(
-          body: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
-            children: [
-              if (_isJoined)
-                Container(
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
+          children: [
+            if (_isJoined)
+              Container(
+                height: 480,
+                decoration: BoxDecoration(border: Border.all()),
+                child: Center(
+                  child: videoPanel(
+                    agoraEngine,
+                    widget.channelName,
+                    uid,
+                    _remoteUid,
+                    _isHost,
+                  ),
+                ),
+              )
+            else
+              Container(
                   height: 480,
                   decoration: BoxDecoration(border: Border.all()),
-                  child: Center(
-                    child: videoPanel(
-                      agoraEngine,
-                      widget.channelName,
-                      uid,
-                      _remoteUid,
-                      _isHost,
-                    ),
-                  ),
-                )
-              else
-                Container(
-                    height: 480,
-                    decoration: BoxDecoration(border: Border.all()),
-                    child: const Center(
-                      child: Text('Press play button'),
-                    )
-                ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: ElevatedButton(
-                      child: const Text("Play"),
-                      onPressed: () => {join()},
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ElevatedButton(
-                      child: const Text("Stop"),
-                      onPressed: () => {leave()},
-                    ),
-                  ),
-                ],
+                  child: const Center(
+                    child: Text('Press play button'),
+                  )
               ),
-            ],
-          )
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: ElevatedButton(
+                    child: const Text("Play"),
+                    onPressed: () => {join()},
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: ElevatedButton(
+                    child: const Text("Stop"),
+                    onPressed: () => {leave()},
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        floatingActionButton: Container(
+          alignment: Alignment.topLeft,
+          margin: const EdgeInsets.all(30),
+          child: FloatingActionButton(
+            onPressed: _redirectToHome,
+            child: const Icon(Icons.close),
+          ),
+        ),
       ),
     );
   }
