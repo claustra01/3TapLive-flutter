@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:hackz_tyranno/infrastructure/graphql.dart';
+
 import 'package:hackz_tyranno/component/dialog.dart';
 import 'package:hackz_tyranno/view/auth.dart';
 import 'package:hackz_tyranno/view/streaming_start.dart';
@@ -14,6 +16,40 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  dynamic channelList;
+
+  void _getChannels() async {
+
+    // build query
+    const String query = """
+      query {
+        getChannelList {
+          name
+          token
+          title
+          ownerName
+          ownerIcon
+        }
+      }
+    """;
+
+    final response = await fetchGraphql(query);
+    if (response != null) {
+      setState(() {
+        channelList = response.data['getChannelList'];
+      });
+    } else {
+      // view error dialog
+      if (!mounted) return;
+      showAlertDialog(context, "Error", "Server error");
+    }
+
+  }
+
+  void _redirectToStartPage() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const StreamingStartPage()));
+  }
+
   void _logout() async {
     try {
       await FirebaseAuth.instance.signOut();
@@ -26,16 +62,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  void _redirectToAgoraPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const StreamingStartPage()));
+  @override
+  void initState() {
+    _getChannels();
+    super.initState();
   }
 
   @override
@@ -46,17 +76,18 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Application for Tyranno-Cup'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        child: ListView.builder(
+          itemCount: channelList != null ? channelList.length : 0,
+          itemBuilder: (BuildContext context, int index) {
+            final channelData = channelList[index];
+            return Column(
+              children: [
+                Text('Title: ${channelData['title']}'),
+                Text('Owner Name: ${channelData['ownerName']}'),
+                Text('Owner URL: ${channelData['ownerURL']}'),
+              ],
+            );
+          },
         ),
       ),
       floatingActionButton: Column(
@@ -66,7 +97,7 @@ class _HomePageState extends State<HomePage> {
             margin: const EdgeInsets.only(bottom: 10),
             child: FloatingActionButton(
               heroTag: 'startStreamButton',
-              onPressed: _redirectToAgoraPage,
+              onPressed: _redirectToStartPage,
               child: const Icon(Icons.video_call_outlined),
             ),
           ),
