@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:hackz_tyranno/infrastructure/graphql.dart';
 import 'package:hackz_tyranno/component/dialog.dart';
+import 'package:hackz_tyranno/view/streaming_host.dart';
 
 class StreamingStartPage extends ConsumerStatefulWidget {
   const StreamingStartPage({Key? key}) : super(key: key);
@@ -42,7 +43,9 @@ class StreamingStartPageState extends ConsumerState<StreamingStartPage> {
     final response = await fetchGraphql(query);
     if (response != null) {
       // create new streaming
-      print(response.data);
+      final data = response.data['createChannel'];
+      if (!mounted) return;
+      Navigator.push(context, MaterialPageRoute(builder: (context) => StreamingHostPage(name: data['name'], token: data['token'])));
     } else {
       // view error dialog
       if (!mounted) return;
@@ -66,7 +69,7 @@ class StreamingStartPageState extends ConsumerState<StreamingStartPage> {
               padding: const EdgeInsets.all(32),
               child: TextField(
                 decoration: const InputDecoration(
-                  label: Text('Title'),
+                  label: Text('Streaming Title'),
                   border: OutlineInputBorder(),
                 ),
                 controller: titleController,
