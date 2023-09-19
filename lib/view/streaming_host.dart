@@ -4,7 +4,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:hackz_tyranno/infrastructure/graphql.dart';
+
 import 'package:hackz_tyranno/component/video_panel.dart';
+import 'package:hackz_tyranno/component/dialog.dart';
 import 'package:hackz_tyranno/view/home.dart';
 
 class StreamingHostPage extends ConsumerStatefulWidget {
@@ -123,6 +126,32 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
     agoraEngine.leaveChannel();
   }
 
+  void _removeChannel() async {
+    // stop streaming
+    leave();
+
+    // build query
+    final String query = """
+      query {
+        deleteChannel(name: "${widget.channelName}")
+      }
+    """;
+
+    final response = await fetchGraphql(query);
+    if (response != null) {
+      print(response);
+      if (response.data['deleteChannel'] == 'ok') {
+        _redirectToHome();
+      }
+    } else {
+      // view error dialog
+      if (!mounted) return;
+      showAlertDialog(context, "Error", "Server error");
+    }
+
+
+  }
+
   void _redirectToHome() {
     Navigator.pushAndRemoveUntil(
       context,
@@ -182,7 +211,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
           alignment: Alignment.topLeft,
           margin: const EdgeInsets.all(30),
           child: FloatingActionButton(
-            onPressed: _redirectToHome,
+            onPressed: _removeChannel,
             child: const Icon(Icons.close),
           ),
         ),
