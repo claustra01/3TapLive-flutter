@@ -43,9 +43,10 @@ class StreamingStartPageState extends ConsumerState<StreamingStartPage> {
     final response = await fetchGraphql(query);
     if (response != null) {
       // create new streaming
+      print(response);
       final data = response.data['createChannel'];
       if (!mounted) return;
-      Navigator.push(context, MaterialPageRoute(builder: (context) => StreamingHostPage(name: data['name'], token: data['token'])));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => StreamingHostPage(channelName: data['name'], token: data['token'])));
     } else {
       // view error dialog
       if (!mounted) return;
