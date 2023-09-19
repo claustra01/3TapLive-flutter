@@ -4,6 +4,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:hackz_tyranno/component/video_panel.dart';
+
 class StreamingHostPage extends ConsumerStatefulWidget {
   final String channelName;
   final String token;
@@ -17,7 +19,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
 
   String appId = dotenv.get('AGORA_APP_ID');
 
-  int uid = 0; // uid of the local user
+  int uid = 0;
 
   int? _remoteUid;
   bool _isJoined = false;
@@ -36,8 +38,8 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
   @override
   void initState() {
     super.initState();
-    // Set up an instance of Agora engine
     setupVideoSDKEngine();
+
   }
 
   @override
@@ -126,73 +128,52 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
     return MaterialApp(
       scaffoldMessengerKey: scaffoldMessengerKey,
       home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Get started with Interactive Live Streaming'),
-          ),
-          body: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            children: [
-              // Container for the local video
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
+          children: [
+            if (_isJoined)
               Container(
-                height: 240,
+                height: 480,
                 decoration: BoxDecoration(border: Border.all()),
-                child: Center(child: _videoPanel()),
-              ),
-              // Button Row
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: ElevatedButton(
-                      child: const Text("Join"),
-                      onPressed: () => {join()},
-                    ),
+                child: Center(
+                  child: videoPanel(
+                    agoraEngine,
+                    widget.channelName,
+                    uid,
+                    _remoteUid,
+                    _isHost,
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ElevatedButton(
-                      child: const Text("Leave"),
-                      onPressed: () => {leave()},
-                    ),
-                  ),
-                ],
+                ),
+              )
+            else
+              Container(
+                height: 480,
+                decoration: BoxDecoration(border: Border.all()),
+                child: const Center(
+                  child: Text('Press start button'),
+                )
               ),
-              // Button Row ends
-            ],
-          )),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: ElevatedButton(
+                    child: const Text("Start"),
+                    onPressed: () => {join()},
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: ElevatedButton(
+                    child: const Text("Stop"),
+                    onPressed: () => {leave()},
+                  ),
+                ),
+              ],
+            ),
+          ],
+        )
+      ),
     );
-  }
-
-  Widget _videoPanel() {
-    if (!_isJoined) {
-      return const Text(
-        'Join a channel',
-        textAlign: TextAlign.center,
-      );
-    } else if (_isHost) {
-      // Show local video preview
-      return AgoraVideoView(
-        controller: VideoViewController(
-          rtcEngine: agoraEngine,
-          canvas: VideoCanvas(uid: uid),
-        ),
-      );
-    } else {
-      // Show remote video
-      if (_remoteUid != null) {
-        return AgoraVideoView(
-          controller: VideoViewController.remote(
-            rtcEngine: agoraEngine,
-            canvas: VideoCanvas(uid: _remoteUid),
-            connection: RtcConnection(channelId: widget.channelName),
-          ),
-        );
-      } else {
-        return const Text(
-          'Waiting for a host to join',
-          textAlign: TextAlign.center,
-        );
-      }
-    }
   }
 
 }
