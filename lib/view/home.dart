@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:hackz_tyranno/component/dialog.dart';
 import 'package:hackz_tyranno/view/auth.dart';
-import 'package:hackz_tyranno/view/agora.dart';
+import 'package:hackz_tyranno/view/streaming_start.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _redirectToAgoraPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const AgoraTest()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const StreamingStartPage()));
   }
 
   @override

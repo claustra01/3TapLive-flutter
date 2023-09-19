@@ -7,7 +7,7 @@ import 'firebase_options.dart';
 import 'package:hackz_tyranno/view/home.dart';
 import 'package:hackz_tyranno/view/auth.dart';
 
-void main() async {
+Future<void> main() async {
 
   // load .env
   await dotenv.load(fileName: '.env');
