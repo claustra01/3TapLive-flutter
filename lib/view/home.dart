@@ -48,9 +48,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _redirectToStartPage() {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const StreamingStartPage()), (_) => false);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const StreamingStartPage()));
   }
 
   void _logout() async {
