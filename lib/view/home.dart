@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:hackz_tyranno/infrastructure/graphql.dart';
 
+import 'package:hackz_tyranno/component/channel_info.dart';
 import 'package:hackz_tyranno/component/dialog.dart';
 import 'package:hackz_tyranno/view/auth.dart';
 import 'package:hackz_tyranno/view/streaming_start.dart';
@@ -80,13 +81,7 @@ class _HomePageState extends State<HomePage> {
           itemCount: channelList != null ? channelList.length : 0,
           itemBuilder: (BuildContext context, int index) {
             final channelData = channelList[index];
-            return Column(
-              children: [
-                Text('Title: ${channelData['title']}'),
-                Text('Owner Name: ${channelData['ownerName']}'),
-                Text('Owner URL: ${channelData['ownerURL']}'),
-              ],
-            );
+            return channelPanel(channelData);
           },
         ),
       ),
