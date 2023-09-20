@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:hackz_tyranno/infrastructure/graphql.dart';
 
@@ -76,7 +77,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Application for Tyranno-Cup'),
+        title: Text(
+          'Now on Live!',
+          style: GoogleFonts.delaGothicOne(
+            fontSize: 30,
+          ),
+        ),
       ),
       body: Center(
         child: ListView.builder(
@@ -91,7 +97,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Container(
-            margin: const EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 15),
             child: FloatingActionButton(
               heroTag: 'startStreamButton',
               onPressed: _redirectToStartPage,
