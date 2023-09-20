@@ -67,6 +67,13 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
 
     await agoraEngine.enableVideo();
 
+    // set rear camera
+    await agoraEngine.setCameraCapturerConfiguration(
+      const CameraCapturerConfiguration(
+        cameraDirection: CameraDirection.cameraRear
+      )
+    );
+
     // Register the event handler
     agoraEngine.registerEventHandler(
       RtcEngineEventHandler(
