@@ -91,6 +91,14 @@ class _HomePageState extends State<HomePage> {
           Container(
             margin: const EdgeInsets.only(bottom: 15),
             child: FloatingActionButton(
+              heroTag: 'refreshButton',
+              onPressed: _getChannels,
+              child: const Icon(Icons.refresh),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 15),
+            child: FloatingActionButton(
               heroTag: 'startStreamButton',
               onPressed: _redirectToStartPage,
               child: const Icon(Icons.video_call_outlined),
