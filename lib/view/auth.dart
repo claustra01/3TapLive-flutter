@@ -18,6 +18,14 @@ class AuthPageState extends ConsumerState<AuthPage> {
   final nameController = TextEditingController();
 
   void _loginWithGoogle() async {
+
+    // input validation
+    if (nameController.text.length > 20) {
+      if (!mounted) return;
+      showAlertDialog(context, "Note", "Display Name is too long");
+      return;
+    }
+
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;

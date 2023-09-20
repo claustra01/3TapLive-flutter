@@ -21,7 +21,11 @@ class CommentFormState extends ConsumerState<CommentForm> {
     // input validation
     if (commentController.text == '') {
       if (!mounted) return;
-      showAlertDialog(context, "Error", "Enter a Comment");
+      showAlertDialog(context, "Note", "Enter a Comment");
+      return;
+    } else if (commentController.text.length > 60) {
+      if (!mounted) return;
+      showAlertDialog(context, "Note", "Comment is too long");
       return;
     }
 
