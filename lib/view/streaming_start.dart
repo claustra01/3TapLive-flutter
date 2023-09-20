@@ -22,7 +22,11 @@ class StreamingStartPageState extends ConsumerState<StreamingStartPage> {
     // input validation
     if (titleController.text == '') {
       if (!mounted) return;
-      showAlertDialog(context, "Error", "Enter a title");
+      showAlertDialog(context, "Note", "Enter a title");
+      return;
+    } else if (titleController.text.length > 20) {
+      if (!mounted) return;
+      showAlertDialog(context, "Note", "Title is too long");
       return;
     }
 
@@ -43,7 +47,6 @@ class StreamingStartPageState extends ConsumerState<StreamingStartPage> {
     final response = await fetchGraphql(query);
     if (response != null) {
       // create new streaming
-      print(response);
       final data = response.data['createChannel'];
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(

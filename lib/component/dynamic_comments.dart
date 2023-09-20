@@ -40,7 +40,7 @@ class DynamicCommentsState extends ConsumerState<DynamicComments> {
     subscription = connectSubscription();
     subscription?.stream.listen((data) {
       setState(() {
-        comments.add(data);
+        comments.insert(0, data);
       });
     });
   }
@@ -54,17 +54,18 @@ class DynamicCommentsState extends ConsumerState<DynamicComments> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        const Text('こんにちは'),
-        Text('コメントの数: ${comments.length}'),
         Expanded(
           child: ListView.builder(
             itemCount: comments.length,
+            reverse: true,
             itemBuilder: (BuildContext context, int index) {
               final commentData = jsonDecode(comments[index]);
               if (commentData['type'] == 'data') {
                 final data = commentData['payload']['data']['comments'];
-                return Text('${data['owner']}: ${data['body']}');
+                return _commentBox(data['owner'], data['body']);
               }
               return const SizedBox();
             },
@@ -73,4 +74,29 @@ class DynamicCommentsState extends ConsumerState<DynamicComments> {
       ],
     );
   }
+}
+
+Widget _commentBox(String owner, String body) {
+  return Container(
+    margin: const EdgeInsets.only(left: 10, bottom: 5),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          owner,
+          style: const TextStyle(
+            fontSize: 10,
+            color: Colors.white,
+          ),
+        ),
+        Text(
+          body,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+          ),
+        ),
+      ]
+    ),
+  );
 }

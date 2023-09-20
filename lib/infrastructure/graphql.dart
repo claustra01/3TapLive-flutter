@@ -61,15 +61,10 @@ WebSocketChannel? connectGqlSubscription(String query, String connId) {
         }
       }
     """;
-    print(startMessage);
     channel.sink.add(startMessage);
     return channel;
 
   } catch (e) {
     return null;
   }
-}
-
-void closeGqlSubscription(WebSocketChannel channel) {
-  channel.sink.close();
 }

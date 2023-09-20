@@ -21,7 +21,11 @@ class CommentFormState extends ConsumerState<CommentForm> {
     // input validation
     if (commentController.text == '') {
       if (!mounted) return;
-      showAlertDialog(context, "Error", "Enter a Comment");
+      showAlertDialog(context, "Note", "Enter a Comment");
+      return;
+    } else if (commentController.text.length > 60) {
+      if (!mounted) return;
+      showAlertDialog(context, "Note", "Comment is too long");
       return;
     }
 
@@ -36,8 +40,10 @@ class CommentFormState extends ConsumerState<CommentForm> {
     """;
 
     // fetch graphql api
+    // なぜか2回叩くと上手くいく
     final response = await fetchGraphql(query);
-    if (response != null) {
+    final response2 = await fetchGraphql(query);
+    if (response != null && response2 != null) {
       commentController.clear();
     } else {
       if (!mounted) return;
