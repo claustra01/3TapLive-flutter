@@ -43,7 +43,6 @@ class StreamingStartPageState extends ConsumerState<StreamingStartPage> {
     final response = await fetchGraphql(query);
     if (response != null) {
       // create new streaming
-      print(response);
       final data = response.data['createChannel'];
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(

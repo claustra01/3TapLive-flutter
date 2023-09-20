@@ -141,8 +141,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
 
     final response = await fetchGraphql(query);
     if (response != null) {
-      print(response);
-      if (response.data['deleteChannel'] == 'ok') {
+      if (response.data['deleteChannel'] == true) {
         _redirectToHome();
       }
     } else {
