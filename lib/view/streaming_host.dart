@@ -33,15 +33,6 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
   final bool _isHost = true;
   late RtcEngine agoraEngine;
 
-  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey
-  = GlobalKey<ScaffoldMessengerState>(); // Global key to access the scaffold
-
-  showMessage(String message) {
-    scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
-      content: Text(message),
-    ));
-  }
-
   @override
   void initState() {
     super.initState();
@@ -79,20 +70,17 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
     agoraEngine.registerEventHandler(
       RtcEngineEventHandler(
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-          showMessage("Local user uid:${connection.localUid} joined the channel");
           setState(() {
             _isJoined = true;
           });
         },
         onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-          showMessage("Remote user uid:$remoteUid joined the channel");
           setState(() {
             _remoteUid = remoteUid;
           });
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
-            UserOfflineReasonType reason) {
-          showMessage("Remote user uid:$remoteUid left the channel");
+          UserOfflineReasonType reason) {
           setState(() {
             _remoteUid = null;
           });
@@ -101,7 +89,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
     );
   }
 
-  void join() async {
+  void _join() async {
 
     // Set channel options
     ChannelMediaOptions options;
@@ -128,7 +116,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
     );
   }
 
-  void leave() {
+  void _leave() {
     setState(() {
       _isJoined = false;
       _remoteUid = null;
@@ -138,7 +126,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
 
   void _removeChannel() async {
     // stop streaming
-    leave();
+    _leave();
 
     // build query
     final String query = """
@@ -167,64 +155,62 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      scaffoldMessengerKey: scaffoldMessengerKey,
-      home: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (_isJoined)
-              Container(
-                margin: const EdgeInsets.only(left: 5, right: 5),
-                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
-                height: 480,
-                decoration: BoxDecoration(border: Border.all()),
-                child: Center(
-                  child: Stack(
-                      children: [
-                        videoPanel(
-                          agoraEngine,
-                          widget.channelName,
-                          uid,
-                          _remoteUid,
-                          _isHost,
-                        ),
-                        DynamicComments(channelName: widget.channelName),
-                      ]
-                  ),
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (_isJoined)
+            Container(
+              margin: const EdgeInsets.only(left: 5, right: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
+              height: deviceHeight * 0.75,
+              decoration: BoxDecoration(border: Border.all()),
+              child: Center(
+                child: Stack(
+                  children: [
+                    videoPanel(
+                      agoraEngine,
+                      widget.channelName,
+                      uid,
+                      _remoteUid,
+                      _isHost,
+                    ),
+                    DynamicComments(channelName: widget.channelName),
+                  ]
                 ),
-              )
-            else
-              Container(
-                  margin: const EdgeInsets.only(left: 5, right: 5),
-                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
-                height: 480,
-                decoration: BoxDecoration(border: Border.all()),
-                child: const Center(
-                  child: Text('Press play button'),
-                )
               ),
-            CommentForm(channelName: widget.channelName),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: ElevatedButton(
-                    child: const Text("Play"),
-                    onPressed: () => {join()},
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton(
-                    child: const Text("Stop"),
-                    onPressed: () => {leave()},
-                  ),
-                ),
-              ],
+            )
+          else
+            Container(
+              margin: const EdgeInsets.only(left: 5, right: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
+              height: deviceHeight * 0.75,
+              decoration: BoxDecoration(border: Border.all()),
+              child: const Center(
+                child: Text('Press play button'),
+              )
             ),
-          ],
-        ),
-        floatingActionButton: closeButton(30, _removeChannel),
+          CommentForm(channelName: widget.channelName),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(left: 5, right:5),
+                child: iconButton(Icons.arrow_back, _removeChannel),
+              ),
+              Container(
+                margin: const EdgeInsets.only(left: 5, right:5),
+                child: iconButton(Icons.play_circle_outline, _join),
+              ),
+              Container(
+                margin: const EdgeInsets.only(left: 5, right:5),
+                // TODO: add switch camera feature
+                child: iconButton(Icons.switch_video_outlined, _join),
+              ),
+            ]
+          ),
+        ],
       ),
     );
   }
