@@ -9,6 +9,7 @@ import 'package:hackz_tyranno/infrastructure/graphql.dart';
 import 'package:hackz_tyranno/component/video_panel.dart';
 import 'package:hackz_tyranno/component/dynamic_comments.dart';
 import 'package:hackz_tyranno/component/comment_form.dart';
+import 'package:hackz_tyranno/component/button.dart';
 import 'package:hackz_tyranno/component/dialog.dart';
 import 'package:hackz_tyranno/view/home.dart';
 
@@ -223,14 +224,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
             ),
           ],
         ),
-        floatingActionButton: Container(
-          alignment: Alignment.topLeft,
-          margin: const EdgeInsets.all(30),
-          child: FloatingActionButton(
-            onPressed: _removeChannel,
-            child: const Icon(Icons.close),
-          ),
-        ),
+        floatingActionButton: closeButton(30, _removeChannel),
       ),
     );
   }

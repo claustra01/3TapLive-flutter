@@ -6,6 +6,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:hackz_tyranno/component/video_panel.dart';
 import 'package:hackz_tyranno/component/dynamic_comments.dart';
 import 'package:hackz_tyranno/component/comment_form.dart';
+import 'package:hackz_tyranno/component/button.dart';
 import 'package:hackz_tyranno/view/home.dart';
 
 class StreamingAudiencePage extends ConsumerStatefulWidget {
@@ -186,14 +187,7 @@ class StreamingAudiencePageState extends ConsumerState<StreamingAudiencePage> {
             ),
           ],
         ),
-        floatingActionButton: Container(
-          alignment: Alignment.topLeft,
-          margin: const EdgeInsets.all(30),
-          child: FloatingActionButton(
-            onPressed: _redirectToHome,
-            child: const Icon(Icons.close),
-          ),
-        ),
+        floatingActionButton: closeButton(30, _redirectToHome),
       ),
     );
   }
