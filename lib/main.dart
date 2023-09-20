@@ -39,8 +39,9 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            // loading component
-            return const SizedBox();
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
           if (snapshot.hasData) {
             // user is logged in
