@@ -174,7 +174,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
           children: [
             if (_isJoined)
               Container(
-                margin: const EdgeInsets.all(10),
+                margin: const EdgeInsets.only(left: 5, right: 5),
                 padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
                 height: 480,
                 decoration: BoxDecoration(border: Border.all()),
@@ -195,16 +195,13 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
               )
             else
               Container(
-                  margin: const EdgeInsets.all(10),
-                  padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
-                  height: 480,
-                  decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: const BorderRadius.all(Radius.circular(10.0))
-                  ),
-                  child: const Center(
-                    child: Text('Press play button'),
-                  )
+                  margin: const EdgeInsets.only(left: 5, right: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
+                height: 480,
+                decoration: BoxDecoration(border: Border.all()),
+                child: const Center(
+                  child: Text('Press play button'),
+                )
               ),
             CommentForm(channelName: widget.channelName),
             Row(
