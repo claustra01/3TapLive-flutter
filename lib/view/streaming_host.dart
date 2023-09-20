@@ -89,6 +89,9 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
   }
 
   void _switchCamera() async {
+    // only when joined
+    if (!_isJoined) return;
+
     _leave();
     // switch camera
     CameraType type = await switchCameraType(agoraEngine, _cameraType);
