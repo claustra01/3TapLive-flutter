@@ -64,16 +64,7 @@ class DynamicCommentsState extends ConsumerState<DynamicComments> {
               final commentData = jsonDecode(comments[index]);
               if (commentData['type'] == 'data') {
                 final data = commentData['payload']['data']['comments'];
-                return Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    '${data['owner']}: ${data['body']}',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
-                  ),
-                );
+                return _commentBox(data['owner'], data['body']);
               }
               return const SizedBox();
             },
@@ -82,4 +73,29 @@ class DynamicCommentsState extends ConsumerState<DynamicComments> {
       ],
     );
   }
+}
+
+Widget _commentBox(String owner, String body) {
+  return Container(
+    margin: const EdgeInsets.only(left: 10, bottom: 5),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          owner,
+          style: const TextStyle(
+            fontSize: 10,
+            color: Colors.white,
+          ),
+        ),
+        Text(
+          body,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+          ),
+        ),
+      ]
+    ),
+  );
 }
