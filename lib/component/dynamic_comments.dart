@@ -40,7 +40,7 @@ class DynamicCommentsState extends ConsumerState<DynamicComments> {
     subscription = connectSubscription();
     subscription?.stream.listen((data) {
       setState(() {
-        comments.add(data);
+        comments.insert(0, data);
       });
     });
   }
@@ -60,6 +60,7 @@ class DynamicCommentsState extends ConsumerState<DynamicComments> {
         Expanded(
           child: ListView.builder(
             itemCount: comments.length,
+            reverse: true,
             itemBuilder: (BuildContext context, int index) {
               final commentData = jsonDecode(comments[index]);
               if (commentData['type'] == 'data') {
