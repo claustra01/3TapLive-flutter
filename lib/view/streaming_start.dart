@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:hackz_tyranno/infrastructure/graphql.dart';
+import 'package:hackz_tyranno/component/button.dart';
 import 'package:hackz_tyranno/component/dialog.dart';
 import 'package:hackz_tyranno/view/streaming_host.dart';
 
@@ -81,10 +82,7 @@ class StreamingStartPageState extends ConsumerState<StreamingStartPage> {
                 controller: titleController,
               ),
             ),
-            ElevatedButton(
-                onPressed: _startStreaming,
-                child: const Text('Streaming Start!')
-            ),
+            textButton('Login with Google', _startStreaming),
           ],
         ),
       ),
