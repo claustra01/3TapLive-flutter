@@ -7,6 +7,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:hackz_tyranno/infrastructure/graphql.dart';
 
 import 'package:hackz_tyranno/component/video_panel.dart';
+import 'package:hackz_tyranno/component/dynamic_comments.dart';
+import 'package:hackz_tyranno/component/comment_form.dart';
 import 'package:hackz_tyranno/component/dialog.dart';
 import 'package:hackz_tyranno/view/home.dart';
 
@@ -148,8 +150,6 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
       if (!mounted) return;
       showAlertDialog(context, "Error", "Server error");
     }
-
-
   }
 
   void _redirectToHome() {
@@ -163,36 +163,49 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
     return MaterialApp(
       scaffoldMessengerKey: scaffoldMessengerKey,
       home: Scaffold(
-        body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (_isJoined)
               Container(
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
                 height: 480,
                 decoration: BoxDecoration(border: Border.all()),
                 child: Center(
-                  child: videoPanel(
-                    agoraEngine,
-                    widget.channelName,
-                    uid,
-                    _remoteUid,
-                    _isHost,
+                  child: Stack(
+                      children: [
+                        videoPanel(
+                          agoraEngine,
+                          widget.channelName,
+                          uid,
+                          _remoteUid,
+                          _isHost,
+                        ),
+                        DynamicComments(channelName: widget.channelName),
+                      ]
                   ),
                 ),
               )
             else
               Container(
-                height: 480,
-                decoration: BoxDecoration(border: Border.all()),
-                child: const Center(
-                  child: Text('Press start button'),
-                )
+                  margin: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
+                  height: 480,
+                  decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: const BorderRadius.all(Radius.circular(10.0))
+                  ),
+                  child: const Center(
+                    child: Text('Press play button'),
+                  )
               ),
+            CommentForm(channelName: widget.channelName),
             Row(
               children: <Widget>[
                 Expanded(
                   child: ElevatedButton(
-                    child: const Text("Start"),
+                    child: const Text("Play"),
                     onPressed: () => {join()},
                   ),
                 ),
