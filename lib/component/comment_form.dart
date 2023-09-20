@@ -37,7 +37,9 @@ class CommentFormState extends ConsumerState<CommentForm> {
 
     // fetch graphql api
     final response = await fetchGraphql(query);
-    if (response == null) {
+    if (response != null) {
+      commentController.clear();
+    } else {
       if (!mounted) return;
       showAlertDialog(context, "Error", "Server error");
     }
