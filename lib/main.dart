@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'firebase_options.dart';
 import 'package:hackz_tyranno/view/home.dart';
@@ -28,10 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Application for Tyranno-Cup',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
-        useMaterial3: true,
-      ),
+      theme: _getCustomTheme(),
       home: StreamBuilder<User?> (
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -50,3 +48,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
+ThemeData _getCustomTheme() {
+  var baseTheme = ThemeData(
+    colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
+    useMaterial3: true,
+  );
+  return baseTheme.copyWith(
+    textTheme: GoogleFonts.murechoTextTheme(baseTheme.textTheme),
+  );
+}
