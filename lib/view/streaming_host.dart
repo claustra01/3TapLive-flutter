@@ -51,12 +51,9 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
     // retrieve or request camera and microphone permissions
     await [Permission.microphone, Permission.camera].request();
 
-    //create an instance of the Agora engine
+    // create an instance of the Agora engine
     agoraEngine = createAgoraRtcEngine();
-    await agoraEngine.initialize(RtcEngineContext(
-        appId: appId
-    ));
-
+    await agoraEngine.initialize(RtcEngineContext(appId: appId));
     await agoraEngine.enableVideo();
 
     // set rear camera
@@ -79,8 +76,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
             _remoteUid = remoteUid;
           });
         },
-        onUserOffline: (RtcConnection connection, int remoteUid,
-          UserOfflineReasonType reason) {
+        onUserOffline: (RtcConnection connection, int remoteUid, UserOfflineReasonType reason) {
           setState(() {
             _remoteUid = null;
           });
@@ -196,15 +192,15 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: const EdgeInsets.only(left: 5, right:5),
+                margin: const EdgeInsets.only(left: 10, right:10),
                 child: iconButton(Icons.arrow_back, _removeChannel),
               ),
               Container(
-                margin: const EdgeInsets.only(left: 5, right:5),
+                margin: const EdgeInsets.only(left: 10, right:10),
                 child: iconButton(Icons.play_circle_outline, _join),
               ),
               Container(
-                margin: const EdgeInsets.only(left: 5, right:5),
+                margin: const EdgeInsets.only(left: 10, right:10),
                 // TODO: add switch camera feature
                 child: iconButton(Icons.switch_video_outlined, _join),
               ),
