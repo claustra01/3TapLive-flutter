@@ -54,6 +54,6 @@ ThemeData _getCustomTheme() {
     useMaterial3: true,
   );
   return baseTheme.copyWith(
-    textTheme: GoogleFonts.murechoTextTheme(baseTheme.textTheme),
+    textTheme: GoogleFonts.yuseiMagicTextTheme(baseTheme.textTheme),
   );
 }
