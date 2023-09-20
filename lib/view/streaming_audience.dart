@@ -4,6 +4,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 
 import 'package:hackz_tyranno/component/video_panel.dart';
+import 'package:hackz_tyranno/component/dynamic_comments.dart';
+import 'package:hackz_tyranno/component/comment_form.dart';
 import 'package:hackz_tyranno/view/home.dart';
 
 class StreamingAudiencePage extends ConsumerStatefulWidget {
@@ -130,31 +132,44 @@ class StreamingAudiencePageState extends ConsumerState<StreamingAudiencePage> {
     return MaterialApp(
       scaffoldMessengerKey: scaffoldMessengerKey,
       home: Scaffold(
-        body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (_isJoined)
               Container(
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
                 height: 480,
                 decoration: BoxDecoration(border: Border.all()),
                 child: Center(
-                  child: videoPanel(
-                    agoraEngine,
-                    widget.channelName,
-                    uid,
-                    _remoteUid,
-                    _isHost,
+                  child: Stack(
+                    children: [
+                      videoPanel(
+                        agoraEngine,
+                        widget.channelName,
+                        uid,
+                        _remoteUid,
+                        _isHost,
+                      ),
+                      DynamicComments(channelName: widget.channelName),
+                    ]
                   ),
                 ),
               )
             else
               Container(
-                  height: 480,
-                  decoration: BoxDecoration(border: Border.all()),
-                  child: const Center(
-                    child: Text('Press play button'),
-                  )
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
+                height: 480,
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0))
+                ),
+                child: const Center(
+                  child: Text('Press play button'),
+                )
               ),
+            CommentForm(channelName: widget.channelName),
             Row(
               children: <Widget>[
                 Expanded(
