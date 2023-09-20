@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:hackz_tyranno/infrastructure/graphql.dart';
+import 'package:hackz_tyranno/component/appbar.dart';
 import 'package:hackz_tyranno/component/button.dart';
 import 'package:hackz_tyranno/component/dialog.dart';
 import 'package:hackz_tyranno/view/streaming_host.dart';
@@ -64,10 +65,7 @@ class StreamingStartPageState extends ConsumerState<StreamingStartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Start Streaming'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
+      appBar: customAppBar(context, 'Let\'s start!'),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -82,7 +80,7 @@ class StreamingStartPageState extends ConsumerState<StreamingStartPage> {
                 controller: titleController,
               ),
             ),
-            textButton('Login with Google', _startStreaming),
+            textButton('Streaming start!', _startStreaming),
           ],
         ),
       ),
