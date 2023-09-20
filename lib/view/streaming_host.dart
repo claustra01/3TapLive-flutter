@@ -5,6 +5,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:hackz_tyranno/infrastructure/graphql.dart';
+import 'package:hackz_tyranno/infrastructure/camera.dart';
 
 import 'package:hackz_tyranno/component/video_panel.dart';
 import 'package:hackz_tyranno/component/dynamic_comments.dart';
@@ -31,6 +32,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
   int? _remoteUid;
   bool _isJoined = false;
   final bool _isHost = true;
+  CameraType _cameraType = CameraType.cameraRear;
   late RtcEngine agoraEngine;
 
   @override
@@ -83,6 +85,16 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
         },
       ),
     );
+  }
+
+  void _switchCamera() async {
+    _leave();
+    // switch camera
+    CameraType type = await switchCameraType(agoraEngine, _cameraType);
+    setState(() {
+      _cameraType = type;
+    });
+    _join();
   }
 
   void _join() async {
@@ -202,7 +214,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
               Container(
                 margin: const EdgeInsets.only(left: 10, right:10),
                 // TODO: add switch camera feature
-                child: iconButton(Icons.switch_video_outlined, _join),
+                child: iconButton(Icons.switch_video_outlined, _switchCamera),
               ),
             ]
           ),
