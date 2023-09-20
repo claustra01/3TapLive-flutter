@@ -28,8 +28,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Application for Tyranno-Cup',
-      theme: _getCustomTheme(),
+      title: 'tyranno-app',
+      theme: _buildCustomTheme(),
       home: StreamBuilder<User?> (
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -48,12 +48,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
-ThemeData _getCustomTheme() {
-  var baseTheme = ThemeData(
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
+ThemeData _buildCustomTheme() {
+  var baseTheme = ThemeData.dark(
     useMaterial3: true,
   );
   return baseTheme.copyWith(
-    textTheme: GoogleFonts.yuseiMagicTextTheme(baseTheme.textTheme),
+    textTheme: GoogleFonts.murechoTextTheme(baseTheme.textTheme),
+    primaryColor: Colors.indigo,
+    scaffoldBackgroundColor: Colors.grey[900],
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.grey[900],
+      elevation: 0,
+    ),
   );
 }
