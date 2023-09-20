@@ -21,9 +21,8 @@ Widget videoPanel(RtcEngine agoraEngine, String channelName, int uid, int? remot
         ),
       );
     } else {
-      return const Text(
-        'Waiting for a host to join',
-        textAlign: TextAlign.center,
+      return const Center(
+        child: CircularProgressIndicator(),
       );
     }
   }

@@ -73,6 +73,10 @@ class CommentFormState extends ConsumerState<CommentForm> {
           margin: const EdgeInsets.only(right: 10),
           child: ElevatedButton(
             onPressed: _sendComment,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey,
+              foregroundColor: Colors.indigo,
+            ),
             child: const Icon(Icons.send),
           ),
         ),

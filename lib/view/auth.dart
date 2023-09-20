@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'package:hackz_tyranno/component/appbar.dart';
+import 'package:hackz_tyranno/component/button.dart';
 import 'package:hackz_tyranno/component/dialog.dart';
 import 'package:hackz_tyranno/view/home.dart';
 
@@ -55,10 +57,7 @@ class AuthPageState extends ConsumerState<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Page'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
+      appBar: customAppBar(context, 'Welcome!'),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -73,10 +72,7 @@ class AuthPageState extends ConsumerState<AuthPage> {
                 controller: nameController,
               ),
             ),
-            ElevatedButton(
-              onPressed: _loginWithGoogle,
-              child: const Text('Login with Google')
-            ),
+            textButton('Login with Google', _loginWithGoogle),
           ],
         ),
       ),

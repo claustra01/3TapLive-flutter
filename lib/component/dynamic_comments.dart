@@ -58,18 +58,28 @@ class DynamicCommentsState extends ConsumerState<DynamicComments> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Expanded(
-          child: ListView.builder(
-            itemCount: comments.length,
-            reverse: true,
-            itemBuilder: (BuildContext context, int index) {
-              final commentData = jsonDecode(comments[index]);
-              if (commentData['type'] == 'data') {
-                final data = commentData['payload']['data']['comments'];
-                return _commentBox(data['owner'], data['body']);
-              }
-              return const SizedBox();
+          child: ShaderMask(
+            shaderCallback: (Rect bounds) {
+              return const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.transparent, Colors.white],
+                stops: [0.0, 0.75],
+              ).createShader(bounds);
             },
-          ),
+            child: ListView.builder(
+              itemCount: comments.length,
+              reverse: true,
+              itemBuilder: (BuildContext context, int index) {
+                final commentData = jsonDecode(comments[index]);
+                if (commentData['type'] == 'data') {
+                  final data = commentData['payload']['data']['comments'];
+                  return _commentBox(data['owner'], data['body']);
+                }
+                return const SizedBox();
+              },
+            ),
+          )
         ),
       ],
     );

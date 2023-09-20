@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hackz_tyranno/infrastructure/graphql.dart';
 
 import 'package:hackz_tyranno/component/channel_info.dart';
+import 'package:hackz_tyranno/component/appbar.dart';
 import 'package:hackz_tyranno/component/dialog.dart';
 import 'package:hackz_tyranno/view/auth.dart';
 import 'package:hackz_tyranno/view/streaming_start.dart';
@@ -74,10 +75,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Application for Tyranno-Cup'),
-      ),
+      appBar: customAppBar(context, 'Now on Live!'),
       body: Center(
         child: ListView.builder(
           itemCount: channelList != null ? channelList.length : 0,
@@ -91,7 +89,15 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Container(
-            margin: const EdgeInsets.only(bottom: 10),
+            margin: const EdgeInsets.only(bottom: 15),
+            child: FloatingActionButton(
+              heroTag: 'refreshButton',
+              onPressed: _getChannels,
+              child: const Icon(Icons.refresh),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 15),
             child: FloatingActionButton(
               heroTag: 'startStreamButton',
               onPressed: _redirectToStartPage,

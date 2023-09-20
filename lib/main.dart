@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'firebase_options.dart';
 import 'package:hackz_tyranno/view/home.dart';
@@ -18,7 +20,11 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -27,17 +33,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Application for Tyranno-Cup',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
-        useMaterial3: true,
-      ),
+      title: 'tyranno-app',
+      theme: _buildCustomTheme(),
       home: StreamBuilder<User?> (
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            // loading component
-            return const SizedBox();
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
           if (snapshot.hasData) {
             // user is logged in
@@ -50,3 +54,20 @@ class MyApp extends StatelessWidget {
   }
 }
 
+ThemeData _buildCustomTheme() {
+  var baseTheme = ThemeData.dark(
+    useMaterial3: true,
+  );
+  return baseTheme.copyWith(
+    textTheme: GoogleFonts.murechoTextTheme(baseTheme.textTheme),
+    primaryColor: Colors.indigo,
+    scaffoldBackgroundColor: Colors.grey[900],
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.indigo,
+      elevation: 0,
+    ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Colors.indigo
+    ),
+  );
+}
