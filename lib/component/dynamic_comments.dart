@@ -54,9 +54,9 @@ class DynamicCommentsState extends ConsumerState<DynamicComments> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        const Text('こんにちは'),
-        Text('コメントの数: ${comments.length}'),
         Expanded(
           child: ListView.builder(
             itemCount: comments.length,
@@ -64,7 +64,16 @@ class DynamicCommentsState extends ConsumerState<DynamicComments> {
               final commentData = jsonDecode(comments[index]);
               if (commentData['type'] == 'data') {
                 final data = commentData['payload']['data']['comments'];
-                return Text('${data['owner']}: ${data['body']}');
+                return Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    '${data['owner']}: ${data['body']}',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                );
               }
               return const SizedBox();
             },
