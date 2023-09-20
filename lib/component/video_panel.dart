@@ -27,3 +27,20 @@ Widget videoPanel(RtcEngine agoraEngine, String channelName, int uid, int? remot
     }
   }
 }
+
+Widget offVideoInfo(bool isInit) {
+  if (isInit) {
+    return const Center(
+      child: Text(
+        'Press the play button',
+        style: TextStyle(
+          fontSize: 25,
+        ),
+      ),
+    );
+  } else {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+}

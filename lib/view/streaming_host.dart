@@ -31,6 +31,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
 
   int? _remoteUid;
   bool _isJoined = false;
+  bool _isInitial = true;
   final bool _isHost = true;
   CameraType _cameraType = CameraType.cameraRear;
   late RtcEngine agoraEngine;
@@ -98,6 +99,10 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
   }
 
   void _join() async {
+
+    setState(() {
+      _isInitial = false;
+    });
 
     // Set channel options
     ChannelMediaOptions options;
@@ -195,9 +200,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
               padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
               height: deviceHeight * 0.75,
               decoration: BoxDecoration(border: Border.all()),
-              child: const Center(
-                child: Text('Press play button'),
-              )
+              child: offVideoInfo(_isInitial),
             ),
           CommentForm(channelName: widget.channelName),
           Row(
