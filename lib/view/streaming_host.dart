@@ -5,6 +5,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:hackz_tyranno/infrastructure/graphql.dart';
+import 'package:hackz_tyranno/infrastructure/camera.dart';
 
 import 'package:hackz_tyranno/component/video_panel.dart';
 import 'package:hackz_tyranno/component/dynamic_comments.dart';
@@ -30,7 +31,9 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
 
   int? _remoteUid;
   bool _isJoined = false;
+  bool _isInitial = true;
   final bool _isHost = true;
+  CameraType _cameraType = CameraType.cameraRear;
   late RtcEngine agoraEngine;
 
   @override
@@ -85,7 +88,24 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
     );
   }
 
+  void _switchCamera() async {
+    // only when joined
+    if (!_isJoined) return;
+
+    _leave();
+    // switch camera
+    CameraType type = await switchCameraType(agoraEngine, _cameraType);
+    setState(() {
+      _cameraType = type;
+    });
+    _join();
+  }
+
   void _join() async {
+
+    setState(() {
+      _isInitial = false;
+    });
 
     // Set channel options
     ChannelMediaOptions options;
@@ -183,9 +203,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
               padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
               height: deviceHeight * 0.75,
               decoration: BoxDecoration(border: Border.all()),
-              child: const Center(
-                child: Text('Press play button'),
-              )
+              child: offVideoInfo(_isInitial),
             ),
           CommentForm(channelName: widget.channelName),
           Row(
@@ -202,7 +220,7 @@ class StreamingHostPageState extends ConsumerState<StreamingHostPage> {
               Container(
                 margin: const EdgeInsets.only(left: 10, right:10),
                 // TODO: add switch camera feature
-                child: iconButton(Icons.switch_video_outlined, _join),
+                child: iconButton(Icons.switch_video_outlined, _switchCamera),
               ),
             ]
           ),

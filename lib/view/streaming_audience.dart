@@ -26,6 +26,7 @@ class StreamingAudiencePageState extends ConsumerState<StreamingAudiencePage> {
 
   int? _remoteUid;
   bool _isJoined = false;
+  bool _isInitial = true;
   final bool _isHost = false;
   late RtcEngine agoraEngine;
 
@@ -72,6 +73,10 @@ class StreamingAudiencePageState extends ConsumerState<StreamingAudiencePage> {
   }
 
   void _join() async {
+
+    setState(() {
+      _isInitial = false;
+    });
 
     // Set channel options
     ChannelMediaOptions options;
@@ -145,13 +150,11 @@ class StreamingAudiencePageState extends ConsumerState<StreamingAudiencePage> {
             )
           else
             Container(
-                margin: const EdgeInsets.only(left: 5, right: 5),
-                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
-                height: deviceHeight * 0.75,
-                decoration: BoxDecoration(border: Border.all()),
-                child: const Center(
-                  child: Text('Press play button'),
-                )
+              margin: const EdgeInsets.only(left: 5, right: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 4),
+              height: deviceHeight * 0.75,
+              decoration: BoxDecoration(border: Border.all()),
+              child: offVideoInfo(_isInitial),
             ),
           CommentForm(channelName: widget.channelName),
           Row(

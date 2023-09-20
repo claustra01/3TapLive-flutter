@@ -42,8 +42,8 @@ class CommentFormState extends ConsumerState<CommentForm> {
     // fetch graphql api
     // なぜか2回叩くと上手くいく
     final response = await fetchGraphql(query);
-    final response2 = await fetchGraphql(query);
-    if (response != null && response2 != null) {
+    // final response2 = await fetchGraphql(query);
+    if (response != null) {
       commentController.clear();
     } else {
       if (!mounted) return;
