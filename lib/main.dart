@@ -61,9 +61,12 @@ ThemeData _buildCustomTheme() {
     textTheme: GoogleFonts.murechoTextTheme(baseTheme.textTheme),
     primaryColor: Colors.indigo,
     scaffoldBackgroundColor: Colors.grey[900],
-    appBarTheme: AppBarTheme(
-      backgroundColor: Colors.grey[900],
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.indigo,
       elevation: 0,
+    ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Colors.indigo
     ),
   );
 }
