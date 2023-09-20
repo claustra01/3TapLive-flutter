@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -59,8 +61,12 @@ class DynamicCommentsState extends ConsumerState<DynamicComments> {
           child: ListView.builder(
             itemCount: comments.length,
             itemBuilder: (BuildContext context, int index) {
-              final commentData = comments[index];
-              return Text(commentData);
+              final commentData = jsonDecode(comments[index]);
+              if (commentData['type'] == 'data') {
+                final data = commentData['payload']['data']['comments'];
+                return Text('${data['owner']}: ${data['body']}');
+              }
+              return const SizedBox();
             },
           ),
         ),
