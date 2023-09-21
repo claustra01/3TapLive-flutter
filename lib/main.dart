@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'tyranno-app',
+      title: '3taplive',
       theme: _buildCustomTheme(),
       home: StreamBuilder<User?> (
         stream: FirebaseAuth.instance.authStateChanges(),
